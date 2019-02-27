@@ -14,6 +14,7 @@ meme_fields = {
     'top_text': fields.String,
     'bottom_text': fields.String,
     'votes': fields.Integer,
+    'created_by': fields.String
 }
 
 def meme_or_404(meme_id): 
@@ -54,10 +55,25 @@ class MemeList(Resource):
             help = 'no votes provided',
             location = ['form', 'json'],
         )
+        self.reqparse.add_argument(
+            'created_by',
+            required = True,
+            help = 'no created_by provided',
+            location = ['form', 'json'],
+        )
 
         super().__init__()
-    
 
+    def get(self):
+        memes = [marshal(meme, meme_fields) for meme in models.Meme.select()]
+        return {'memes' : memes}
+    
+    @marshal_with(meme_fields)
+    def post(self):
+        args = self.reqparse.parse_args()
+        print(args, " This is args in post route")
+        meme = models.Meme.create(**args)
+        return meme
 
 class Meme(Resource):
     def __init__(self):
@@ -91,6 +107,8 @@ class Meme(Resource):
     @marshal_with(meme_fields)
     def get(self, id):
         return meme_or_404(id)
+
+    
 
 
 

@@ -9,7 +9,9 @@ from flask_login import login_user, logout_user
 import models
 
 user_fields = {
-    'username': fields.String
+    'username': fields.String,
+    'email': fields.String,
+    'password': fields.String
 }
 
 class UserList(Resource):
@@ -34,21 +36,15 @@ class UserList(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'memes',
-            required=True,
-            help='No memes provided',
-            location=['form', 'json']
-        )
-        self.reqparse.add_argument(
-            'favs',
-            required=True,
-            help='No favs provided',
-            location=['form', 'json']
-        )
-        self.reqparse.add_argument(
             'email',
             required=True,
             help='No email provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'is_admin',
+            required=True,
+            help='No is_admin provided',
             location=['form', 'json']
         )
 
@@ -62,10 +58,10 @@ class UserList(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        print(args, 'args in post route USERS')
         if args['password'] == args['verify_password']:
-            user = models.User.create_user(username = args['username'], password=['password'], email=['email'], memes=['memes'], favs=['favs'])
+            user = models.User.create_user(username = args['username'], password=args['password'], email=args['email'], is_admin=args['is_admin'])
             login_user(user)
+            # print('user', user.username, user.id)
             return marshal(user, user_fields), 201
         return make_response(
             json.dumps({
