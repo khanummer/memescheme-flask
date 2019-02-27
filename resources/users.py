@@ -125,8 +125,10 @@ class User(Resource):
         query.execute()
         return(models.User.get(models.User.id == id), 200)
 
-
-
+    def delete(self, id):
+        query = models.User.delete().where(models.User.id == id)
+        query.execute()
+        return ('USER DELETED')
 
 
 
