@@ -9,10 +9,19 @@ from flask_login import login_user, logout_user
 import models
 
 user_fields = {
+    'id': fields.Integer,
     'username': fields.String,
     'email': fields.String,
     'password': fields.String
 }
+
+def user_or_404(user_id): 
+    try:
+        user = models.User.get(models.User.id == user_id)
+    except models.User.DoesNotExist:
+        abort(404)
+    else:
+        return user
 
 class UserList(Resource):
     def __init__(self):
@@ -105,6 +114,10 @@ class User(Resource):
 
         super().__init__()
 
+    @marshal_with(user_fields)
+    def get(self, id):
+        return user_or_404(id)
+
     
 
 
@@ -118,4 +131,10 @@ api.add_resource(
     UserList,
     '/users',
     endpoint='users'
+)
+
+api.add_resource(
+    User,
+    '/users/<int:id>',
+    endpoint='user'
 )
