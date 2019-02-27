@@ -1,7 +1,7 @@
 from flask import Flask, g, render_template, flash, redirect, url_for
 from resources.memes import memes_api
 from resources.users import users_api
-from resources.login import login_api
+# from resources.login import login_api
 
 import models
 from flask_restful import reqparse
@@ -50,11 +50,11 @@ def after_request(response):
 
 CORS(memes_api, origins=["http://localhost:3000"], supports_credentials=True)
 CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(login_api, origins=["http://localhost:3000"], supports_credentials=True)
+# CORS(login_api, origins=["http://localhost:3000"], supports_credentials=True)
 
 app.register_blueprint(memes_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/api/v1')
-app.register_blueprint(login_api, url_prefix='/api/v1')
+# app.register_blueprint(login_api, url_prefix='/api/v1')
 
 
 # @app.route('/register', methods=('GET', 'POST'))
@@ -67,9 +67,6 @@ app.register_blueprint(login_api, url_prefix='/api/v1')
 def hello_world():
     return 'Hello World'
 
-@app.route('/api/v1/login', methods=['GET', 'POST'])
-def login():
-   print('login route')
 
 if __name__ == '__main__':
     models.initialize()

@@ -4,7 +4,11 @@ from flask import jsonify, Blueprint, abort
 
 from flask_restful import (Resource, Api, reqparse, fields, marshal, marshal_with, url_for)
 
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, LoginManager
+
+login_manager = LoginManager()
+
+from flask_bcrypt import check_password_hash
 
 import models
 
@@ -160,20 +164,57 @@ class UserLogin(Resource):
 
         super().__init__()
 
-    # @marshal_with
     def post(self):
         args = self.reqparse.parse_args()
         print(args['username'])
+        print(args)
         logged_user = models.User.get(models.User.username == args['username'])
         print('---------- logged')
-        if logged_user:
+        if logged_user and check_password_hash(logged_user.password, args['password']):
             login_user(logged_user)
             print(current_user)
             print('current_user')
             return marshal(logged_user, user_fields)
+        else:
+            return 'The given email or password does not match sucka'
+
+    # def post(self):
+    #     args = self.reqparse.parse_args()
+    #     if args.validate_on_submit():
+    #         try:
+    #             user = models.User.get(
+    #                 models.User.email == args.email.data
+    #             )
+    #             if check_password_hash(user.password, args.password.data):
+    #                 login_user(user)
+    #                 print("You're now logged in!")
+    #             else:
+    #                 print("No user with that email/password combo")
+    #         except models.DoesNotExist:
+    #             print("No user with that email/password combo")
+    #     return render_template('register.html', args=args) 
+
+    # def post(self):
+    #     args = self.reqparse.parse_args()
+    #     print(args['username'])
+    #     print(models.User.get(models.User.password), 'models password')
+    #     print(args['password'], 'args password')
+        # if models.User.get(models.User.password == args['password']):
+            # logged_user = models.User.get(models.User.username == args['username'])
+            # print('---------- logged')
+            # if logged_user:
+            #     login_user(logged_user)
+            #     print(current_user)
+            #     print('current_user')
+            #     return marshal(logged_user, user_fields)
+        # else:
+            # return 'YOUR PASSWORD IS WRONG'
+
+    
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
+
 
 api.add_resource(
     UserList,
@@ -183,9 +224,8 @@ api.add_resource(
 api.add_resource(
     UserLogin,
     '/users/login',
-    endpoint='user'
+    endpoint='userlogin'
 )
-
 api.add_resource(
     User,
     '/users/<int:id>',
