@@ -111,9 +111,14 @@ class Meme(Resource):
     @marshal_with(meme_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        query = models.Meme.update(**args).where(models.Meme.id==id)
+        query = models.Meme.update(**args).where(models.Meme.id == id)
         query.execute()
         return(models.Meme.get(models.Meme.id == id), 200)
+
+    def delete(self, id):
+        query = models.Meme.delete().where(models.Meme.id == id)
+        query.execute()
+        return ('MEME DELETE')
 
     
 
