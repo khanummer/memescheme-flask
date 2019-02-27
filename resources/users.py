@@ -118,7 +118,14 @@ class User(Resource):
     def get(self, id):
         return user_or_404(id)
 
-    
+    @marshal_with(user_fields)
+    def put(self, id):
+        args = self.reqparse.parse_args()
+        query = models.User.update(username = args['username'], password=args['password'], email=args['email'], is_admin=args['is_admin']).where(models.User.id == id)
+        query.execute()
+        return(models.User.get(models.User.id == id), 200)
+
+
 
 
 
