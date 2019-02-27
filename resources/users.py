@@ -4,7 +4,7 @@ from flask import jsonify, Blueprint, abort
 
 from flask_restful import (Resource, Api, reqparse, fields, marshal, marshal_with, url_for)
 
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 
 import models
 
@@ -130,8 +130,47 @@ class User(Resource):
         query.execute()
         return ('USER DELETED')
 
+class UserLogin(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'username',
+            required=True,
+            help='No username provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'password',
+            required=True,
+            help='No password provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'verify_password',
+            required=True,
+            help='No verify_password provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'email',
+            required=True,
+            help='No email provided',
+            location=['form', 'json']
+        )
 
+        super().__init__()
 
+    # @marshal_with
+    def post(self):
+        args = self.reqparse.parse_args()
+        print(args['username'])
+        logged_user = models.User.get(models.User.username == args['username'])
+        print('---------- logged')
+        if logged_user:
+            login_user(logged_user)
+            print(current_user)
+            print('current_user')
+            return marshal(logged_user, user_fields)
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
@@ -141,9 +180,15 @@ api.add_resource(
     '/users',
     endpoint='users'
 )
+api.add_resource(
+    UserLogin,
+    '/users/login',
+    endpoint='user'
+)
 
 api.add_resource(
     User,
     '/users/<int:id>',
     endpoint='user'
 )
+
