@@ -108,6 +108,15 @@ class Meme(Resource):
     def get(self, id):
         return meme_or_404(id)
 
+    @marshal_with(meme_fields)
+    def put(self, id):
+        args = self.reqparse.parse_args()
+        query = models.Meme.update(**args).where(models.Meme.id==id)
+        query.execute()
+        return(models.Meme.get(models.Meme.id == id), 200)
+
+    
+
     
 
 

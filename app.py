@@ -5,7 +5,7 @@ import models
 
 
 from flask_cors import CORS
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 login_manager = LoginManager()
 
 import os 

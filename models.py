@@ -63,7 +63,6 @@ class Favs(Model):
 
 def initialize():
     DATABASE.connect()
-    
     DATABASE.create_tables([User, Meme], safe=True)
     DATABASE.close()
 
