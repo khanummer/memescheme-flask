@@ -25,6 +25,11 @@ class User(UserMixin, Model):
     class Meta:
         database = DATABASE
 
+    # def get_memes(self):
+    #     return Meme.select().where(
+    #         (meme.created_by == self)
+    #     )
+
     @classmethod
     def create_user(cls, username, email, password, is_admin):
         # removed .lower()
@@ -53,8 +58,12 @@ class Meme(Model):
         database = DATABASE
         db_table = 'memes'
 
-    # @classmethod
-    # def create_meme(cls, image, top_text, bottom_text, votes, created_at, created_by):
+    @classmethod
+    def create_meme(cls, image, top_text, bottom_text, votes, created_by, created_at):
+        meme = cls(image = image, top_text = top_text, bottom_text = bottom_text, votes = votes, created_at = created_at, created_by = created_by)
+        meme.save()
+        return meme
+        
 
 
 class Favs(Model):

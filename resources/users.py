@@ -134,6 +134,13 @@ class User(Resource):
         query.execute()
         return ('USER DELETED')
 
+    # @get_memes(user_fields)
+    # def get(self, id):
+    #     allMemes = current_user.get_memes(id)
+    #     print(allMemes)
+    #     return allMemes
+
+
 class UserLogin(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
