@@ -163,20 +163,17 @@ class UserLogin(Resource):
         )
 
         super().__init__()
-
+# try this catch
     def post(self):
         args = self.reqparse.parse_args()
         print(args['username'])
         print(args)
-        logged_user = models.User.get(models.User.username == args['username'])
-        print('---------- logged')
-        if logged_user and check_password_hash(logged_user.password, args['password']):
-            login_user(logged_user)
-            print(current_user)
-            print('current_user')
+        try:
+            logged_user = models.User.get(models.User.username == args['username'])
             return marshal(logged_user, user_fields)
-        else:
-            return 'The given email or password does not match sucka'
+        except:
+            return "wrong"
+
 
     # def post(self):
     #     args = self.reqparse.parse_args()
