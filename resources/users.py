@@ -125,14 +125,15 @@ class User(Resource):
     @marshal_with(user_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        query = models.User.update(username = args['username'], password=args['password'], email=args['email'], is_admin=args['is_admin']).where(models.User.id == id)
+        query = models.User.update(username = args['username'], password=args['password'], email=args['email']).where(models.User.id == id)
         query.execute()
         return(models.User.get(models.User.id == id), 200)
 
     def delete(self, id):
-        query = models.User.delete().where(models.User.id == id)
-        
-        query.execute()
+        memeQuery = models.Meme.delete().where(models.Meme.created_by == id)
+        memeQuery.execute()
+        userQuery = models.User.delete().where(models.User.id == id)
+        userQuery.execute()
         return ('USER DELETED')
 
     # @get_memes(user_fields)

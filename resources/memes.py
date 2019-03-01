@@ -20,12 +20,10 @@ meme_fields = {
 def meme_or_404(meme_id): 
     try:
         meme = models.Meme.get(models.Meme.id == meme_id)
-        created_by = models.User.get(models.Meme.created_by == user_id)
     except models.Meme.DoesNotExist:
         abort(404)
     else:
         return meme
-        return created_by
 
 
 
