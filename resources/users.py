@@ -16,7 +16,8 @@ user_fields = {
     'id': fields.Integer,
     'username': fields.String,
     'email': fields.String,
-    'password': fields.String
+    'password': fields.String,
+    'is_admin': fields.Boolean
 }
 
 def user_or_404(user_id): 
@@ -125,9 +126,14 @@ class User(Resource):
     @marshal_with(user_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        query = models.User.update(username = args['username'], password=args['password'], email=args['email']).where(models.User.id == id)
+        print(args, 'these are the args in edit')
+        query = models.User.update(
+            username = args['username'], 
+            password=args['password'], 
+            email=args['email'], 
+            is_admin=args['is_admin']).where(models.User.id == id)
         query.execute()
-        return(models.User.get(models.User.id == id), 200)
+        return(query, 200)
 
     def delete(self, id):
         memeQuery = models.Meme.delete().where(models.Meme.created_by == id)
@@ -170,6 +176,13 @@ class UserLogin(Resource):
             help='No email provided',
             location=['form', 'json']
         )
+        # IF YOU ADD THIS EDIT USER REACT FETCH BREAKS 
+        # self.reqparse.add_argument(
+        #     'is_admin',
+        #     required=True,
+        #     help='No is_admin provided',
+        #     location=['form', 'json']
+        # )
 
         super().__init__()
 # try this catch
@@ -179,6 +192,7 @@ class UserLogin(Resource):
         print(args)
         try:
             logged_user = models.User.get(models.User.username == args['username'])
+            login_user(logged_user)
             return marshal(logged_user, user_fields)
         except:
             return "wrong"
