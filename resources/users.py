@@ -131,6 +131,7 @@ class User(Resource):
 
     def delete(self, id):
         query = models.User.delete().where(models.User.id == id)
+        
         query.execute()
         return ('USER DELETED')
 
