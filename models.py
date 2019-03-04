@@ -1,3 +1,10 @@
+import os
+
+from playhouse.db_url import connect
+
+DATABASE = connect(os.environ.get('DATABASE_URL'))
+
+
 import datetime
 
 from peewee import *
