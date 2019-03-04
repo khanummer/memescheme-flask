@@ -1,10 +1,11 @@
 import os
+import config
 
 from playhouse.db_url import connect
 
 # DATABASE = SqliteDatabase('memes.sqlite')
 
-DATABASE = connect(os.environ.get(SqliteDatabase('memes.sqlite'))
+DATABASE = connect(os.environ.get('DATABASE_URL')
 
 
 import datetime
@@ -17,7 +18,6 @@ from flask_login import UserMixin
 
 
 
-import config
 
 
 
