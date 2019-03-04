@@ -2,7 +2,7 @@ import os
 
 from playhouse.db_url import connect
 
-DATABASE = connect(os.environ.get('memes.sqlite'))
+DATABASE = connect(os.environ.get('DATABASE')
 
 
 import datetime
