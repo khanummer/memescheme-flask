@@ -5,7 +5,7 @@ from playhouse.db_url import connect
 DATABASE = connect(os.environ.get('DATABASE')
 
 
-import datetime
+# import datetime
 
 from peewee import *
 
