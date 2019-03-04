@@ -1,3 +1,4 @@
+import os 
 from flask import Flask, g, render_template, flash, redirect, url_for
 from resources.memes import memes_api
 from resources.users import users_api
@@ -15,7 +16,6 @@ from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 login_manager = LoginManager()
 
-import os 
 
 from werkzeug.utils import secure_filename
 
