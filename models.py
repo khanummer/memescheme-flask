@@ -2,7 +2,7 @@ import os
 
 from playhouse.db_url import connect
 
-DATABASE = connect(os.environ.get('DATABASE_URL'))
+DATABASE = connect(os.environ.get('http://memeschemeapp.herokuapp.com'))
 
 
 import datetime
@@ -16,7 +16,7 @@ from flask_login import UserMixin
 
 
 import config
-DATABASE = SqliteDatabase('memes.sqlite')
+# DATABASE = SqliteDatabase('memes.sqlite')
 
 
 
