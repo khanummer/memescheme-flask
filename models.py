@@ -5,7 +5,7 @@ from playhouse.db_url import connect
 DATABASE = connect(os.environ.get('DATABASE')
 
 
-# import datetime
+import datetime
 
 from peewee import *
 
@@ -16,7 +16,7 @@ from flask_login import UserMixin
 
 
 import config
-# DATABASE = SqliteDatabase('memes.sqlite')
+DATABASE = SqliteDatabase('memes.sqlite')
 
 
 
