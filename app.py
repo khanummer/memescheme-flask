@@ -1,10 +1,10 @@
 import os 
 from flask import Flask, g, render_template, flash, redirect, url_for
+import models
 from resources.memes import memes_api
 from resources.users import users_api
 # from resources.login import login_api
 
-import models
 from flask_restful import reqparse
 
 from flask_wtf import FlaskForm as form
