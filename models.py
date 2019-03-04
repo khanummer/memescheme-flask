@@ -2,9 +2,9 @@ import os
 
 from playhouse.db_url import connect
 
-DBDATABASE = SqliteDatabase('memes.sqlite')
+# DATABASE = SqliteDatabase('memes.sqlite')
 
-DATABASE = connect(os.environ.get('DBDATABASE')
+DATABASE = connect(os.environ.get(SqliteDatabase('memes.sqlite'))
 
 
 import datetime
