@@ -1,9 +1,10 @@
+import os 
 from flask import Flask, g, render_template, flash, redirect, url_for
+import models
 from resources.memes import memes_api
 from resources.users import users_api
 # from resources.login import login_api
 
-import models
 from flask_restful import reqparse
 
 from flask_wtf import FlaskForm as form
@@ -15,7 +16,6 @@ from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 login_manager = LoginManager()
 
-import os 
 
 from werkzeug.utils import secure_filename
 
@@ -48,8 +48,8 @@ def after_request(response):
     g.db.close()
     return response
 
-CORS(memes_api, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(memes_api, origins=["https://localhost:3000", "https://memescheme.herokuapp.com"], supports_credentials=True)
+CORS(users_api, origins=["https://localhost:3000", "https://memescheme.herokuapp.com"], supports_credentials=True)
 # CORS(login_api, origins=["http://localhost:3000"], supports_credentials=True)
 
 app.register_blueprint(memes_api, url_prefix='/api/v1')
@@ -67,6 +67,10 @@ app.register_blueprint(users_api, url_prefix='/api/v1')
 def hello_world():
     return 'Hello World'
 
+
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
 if __name__ == '__main__':
     models.initialize()
