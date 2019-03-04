@@ -2,7 +2,7 @@ import os
 
 from playhouse.db_url import connect
 
-DATABASE = connect(os.environ.get('http://memeschemeapp.herokuapp.com'))
+DATABASE = connect(os.environ.get('http://memescheme.herokuapp.com'))
 
 
 import datetime
