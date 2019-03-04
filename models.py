@@ -15,10 +15,10 @@ from flask_login import UserMixin
 
 
 import config
-DATABASE = SqliteDatabase('memes.sqlite')
+DATABASEE = SqliteDatabase('memes.sqlite')
 
 
-DATABASE = connect(os.environ.get('DATABASE')
+DATABASE = connect(os.environ.get('DATABASEE')
 
 
 
